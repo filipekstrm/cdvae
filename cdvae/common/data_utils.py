@@ -651,10 +651,10 @@ def get_scaler_from_data_list(data_list, key):
 
 def preprocess(input_file, num_workers, niggli, primitive, graph_method,
                prop_list):
-    pickle_file = new_file_path = os.path.splitext(input_file)[0] + ".pkl"
+    pickle_file = os.path.splitext(input_file)[0] + f"_{niggli}_{primitive}_{graph_method}_{prop_list}" + ".pkl"
     if os.path.isfile(pickle_file):
         with open(pickle_file, 'rb') as file:
-            print("Reading data from file")
+            print("Reading data from file: ", pickle_file)
             loaded_data = pickle.load(file)
             return loaded_data
     df = pd.read_csv(input_file)
@@ -686,7 +686,7 @@ def preprocess(input_file, num_workers, niggli, primitive, graph_method,
     ordered_results = [mpid_to_results[df.iloc[idx]['material_id']]
                        for idx in range(len(df))]
     with open(pickle_file, 'wb') as file:
-        print("Saving dataset to file")
+        print("Saving dataset to file: ", pickle_file)
         pickle.dump(ordered_results, file)
 
     return ordered_results
